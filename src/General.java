@@ -23,7 +23,7 @@ public class General
         basic.add("{");
         linePlace++;
         
-        basic.add("\treturn 0;");
+        basic.add("     return 0;");
         basic.add("}");
     }
     
@@ -57,5 +57,15 @@ public class General
     	//basic.insert(basic.begin()+linePlace, line);
     	basic.add(linePlace, line);
     	linePlace++;
+    }
+    
+    public void insertToBlock(int lineNum)
+    {
+    	
+    }
+    
+    public int findBlock()
+    {
+    	return 0;
     }
 }

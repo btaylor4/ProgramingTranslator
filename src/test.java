@@ -8,18 +8,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-
 import src.main.java.org.apache.commons.codec.binary.*;
 import src.main.java.org.apache.commons.io.*;
-
 import javax.sound.sampled.*;
-
 import java.io.*;
-
 import com.oschrenk.io.*;
-
 import org.apache.commons.codec.binary.Base64;
-
 import javaFlacEncoder.FLAC_FileEncoder;
 
 public class test 
@@ -110,18 +104,6 @@ public class test
 	public static String buildJSON(String s)
 	{
 		String json = "{\"config\": {\"encoding\": \"FLAC\", \"sampleRate\": 16000},\"audio\":{\"content\":\"" + s +"\"}}";
-		
-		/*{
-			  "config":
-			  {
-			      "encoding": "LINEAR16",
-			      "sampleRate": 16000  
-			  },
-			  
-			  "audio": {
-			    "content" : 
-			  },
-			}*/
 		
 		return json;
 	}
@@ -224,9 +206,7 @@ public class test
 		General startup = new General();
 		Dictionary c1 = new Dictionary();
 		Scanner console = new Scanner(System.in);
-		System.out.println("What would you like to do?");
-		System.out.println("1. Create a New Project");
-		System.out.println("1. Open an Existing Project");
+		
 		String speech = "";
 		String projectName = "";
 		String temp = "";
@@ -268,6 +248,12 @@ public class test
 	    s.setWord("string");
 	    s.addSyns("strings");
 	    
+	    Word c = new Word();
+	    c.setWord("char");
+	    c.addSyns("chars");
+	    c.addSyns("character");
+	    c.addSyns("characters");
+	    
 	    Word d = new Word();
 	    d.setWord("double");
 	    d.addSyns("doubles");
@@ -284,6 +270,7 @@ public class test
 	    c1.addWord(f);
 	    c1.addWord(v);
 	    c1.addWord(s);
+	    c1.addWord(c);
 	    
 	    Word a = new Word();
 	    a.setWord("array");
@@ -294,16 +281,26 @@ public class test
 	    ve.addSyns("vectors");
 	    c1.addWord(a);
 	    c1.addWord(ve);
+	    
+	    //category 1 : every simple type
+	    //category 2 : 
 		
 		int eles = 0;
 	    int iters = 0;
 	    int wordCount = 0;
 	    int var = 0;
 	    int find = 0;
+	    int init = 0;
+	    String tab = "     ";
 		
 		try
 		{
-			speech = testM();
+			System.out.println("What would you like to do?");
+			System.out.println("1. Create a New Project");
+			System.out.println("2. Open an Existing Project");
+			
+			//speech = testM();
+			speech = console.nextLine();
 			
 			if(speech.contains("new project") || speech.contains("project"))
 			{
@@ -315,14 +312,15 @@ public class test
 				*/
 				
 				System.out.println("What will your program be called?");
-				projectName = testM();
+				//projectName = testM();
+				projectName = "demotest";
 				
 				startup.writeToFile(projectName);
 				
 				while(!speech.equalsIgnoreCase("quit") || !speech.equalsIgnoreCase("quick"))
 				{
 					System.out.println("Command:");
-					speech = testM();
+					speech = console.nextLine();
 					
 					if(speech.equalsIgnoreCase("quit") || speech.equalsIgnoreCase("quick"))
 					{
@@ -349,7 +347,186 @@ public class test
 	                instCheck.put(temp, wordCount);
 	                temp = "";
 	                
-	                for(int i = 1; i < insts.size(); i++) //check each of those words to figure what to do
+	                if(instCheck.containsKey("int"))
+	                {
+	                	var = instCheck.get("int") + 1;
+	                	
+	                	if(instCheck.containsKey("equals"))
+	                	{
+	                		init = instCheck.get("equals") + 1;
+	                		String addition = tab + c1.getType(insts.get(var - 1)) + " " + insts.get(var) + " = " + nums.get(insts.get(init)) + ";";
+	                		startup.addToBasic(addition);
+	                		startup.writeToFile(projectName);
+	                	}
+	                	
+	                	else
+	                	{
+	                		String addition = tab + c1.getType(insts.get(var - 1)) + " " + insts.get(var) + ";";
+	                		startup.addToBasic(addition);
+	                		startup.writeToFile(projectName);
+	                	}
+	                }
+	                
+	                else if(instCheck.containsKey("float"))
+	                {
+	                	var = instCheck.get("float") + 1;
+	                	
+	                	if(instCheck.containsKey("equals"))
+	                	{
+	                		init = instCheck.get("equals") + 1;
+	                		String addition = tab + c1.getType(insts.get(var - 1)) + " " + insts.get(var) + " = " + insts.get(init) +";";
+	                		startup.addToBasic(addition);
+	                		startup.writeToFile(projectName);
+	                	}
+	                	
+	                	else
+	                	{
+	                		String addition = tab + c1.getType(insts.get(var - 1)) + " " + insts.get(var) + ";";
+	                		startup.addToBasic(addition);
+	                		startup.writeToFile(projectName);
+	                	}
+	                }
+	                
+	                else if(instCheck.containsKey("double"))
+	                {
+	                	var = instCheck.get("double") + 1;
+	                	
+	                	if(instCheck.containsKey("equals"))
+	                	{
+	                		init = instCheck.get("equals") + 1;
+	                		String addition = tab + c1.getType(insts.get(var - 1)) + " " + insts.get(var) + " = " + insts.get(init) +";";
+	                		startup.addToBasic(addition);
+	                		startup.writeToFile(projectName);
+	                	}
+	                	
+	                	else
+	                	{
+	                		String addition = tab + c1.getType(insts.get(var - 1)) + " " + insts.get(var) + ";";
+	                		startup.addToBasic(addition);
+	                		startup.writeToFile(projectName);
+	                	}
+	                }
+	                
+	                else if(instCheck.containsKey("char"))
+	                {
+	                	var = instCheck.get("char") + 1;
+	                	
+	                	if(instCheck.containsKey("equals"))
+	                	{
+	                		init = instCheck.get("equals") + 1;
+	                		String addition = tab + c1.getType(insts.get(var - 1)) + " " + insts.get(var) + " = " + "'" + insts.get(init) + "';";
+	                		startup.addToBasic(addition);
+	                		startup.writeToFile(projectName);
+	                	}
+	                	
+	                	else
+	                	{
+	                		String addition = tab + c1.getType(insts.get(var - 1)) + " " + insts.get(var) + ";";
+	                		startup.addToBasic(addition);
+	                		startup.writeToFile(projectName);
+	                	}
+	                }
+	                
+	                else if(instCheck.containsKey("string"))
+	                {
+	                	var = instCheck.get("string") + 1;
+	                	
+	                	if(instCheck.containsKey("equals"))
+	                	{
+	                		init = instCheck.get("equals") + 1;
+	                		String addition = tab + c1.getType(insts.get(var - 1)) + " " + insts.get(var) + " = " + "\"" + insts.get(init) + "\";";
+	                		startup.addToBasic(addition);
+	                		startup.writeToFile(projectName);
+	                	}
+	                	
+	                	else
+	                	{
+	                		String addition = tab + c1.getType(insts.get(var - 1)) + " " + insts.get(var) + ";";
+	                		startup.addToBasic(addition);
+	                		startup.writeToFile(projectName);
+	                	}
+	                }
+	                
+	                else if(instCheck.containsKey("if"))
+	                {	                	
+                		String begin = "";
+	                	String fP = tab +"{\n";
+	                	String sP = tab +"}\n";
+	                	
+	                	speech = console.nextLine();
+	                	
+	                	/*        
+	                	 * next line will not work correctly if they have a method named equals or 
+	                	 * a string variable initialized to equals or string called equals
+	                	 */
+	                	                	
+	                	while(!speech.equalsIgnoreCase("end if") && !speech.equalsIgnoreCase("end statement"))
+	                	{
+	                		if(speech.contains("equals"))
+		                	{	
+	                			String setVarTo = speech.substring(speech.indexOf("equals") + 7, speech.indexOf("then") - 1);
+		                		speech = speech.replaceAll("equals", "=="); 
+		                		begin = tab + "if("+ speech.substring(3,speech.indexOf("==") + 3) + nums.get(setVarTo) + ")";
+		                		startup.addToBasic(begin);
+			                	startup.addToBasic(fP);
+			                	startup.writeToFile(projectName);
+			                	
+			                	if(speech.contains("then"))
+			                	{
+			                		setVarTo = speech.substring(speech.indexOf("==", speech.indexOf("==") + 3) + 3, speech.length());
+			                		speech = speech.replaceAll("==", "="); 
+			                		String statement = tab + tab + speech.substring(speech.indexOf("then") + 4, speech.indexOf(setVarTo)) + nums.get(setVarTo)+ ";";
+			                		startup.addToBasic(statement);
+				                	startup.writeToFile(projectName);
+			                	}
+		                	}
+		                	
+		                	else if(speech.contains("less than"))
+		                	{	
+		                		speech = speech.replaceAll("less than", "<"); 
+		                		begin = tab + "if("+ speech.substring(3,speech.indexOf("then")) + ")";
+		                		startup.addToBasic(begin);
+			                	startup.addToBasic(fP);
+			                	startup.writeToFile(projectName);
+		                	}
+		                	
+		                	else if(speech.contains("greater than"))
+		                	{	
+		                		speech = speech.replaceAll("greater than", ">"); 
+		                		begin = tab + "if("+ speech.substring(3,speech.indexOf("then")) + ")";
+		                		startup.addToBasic(begin);
+			                	startup.addToBasic(fP);
+			                	startup.writeToFile(projectName);
+		                	}
+	                		
+	                		speech = console.nextLine();
+	                	}
+	                	
+	                	if(speech.equalsIgnoreCase("end if") || speech.equalsIgnoreCase("end statement"))
+	                	{
+	                		startup.addToBasic(sP);
+	                		startup.writeToFile(projectName);
+	                	}
+	                }
+	                
+	                else if(instCheck.containsKey("while loop"))
+	                {
+	                	
+	                }
+	                
+	                
+	                else if(instCheck.containsKey("for loop"))
+	                {
+	                	
+	                }
+	                
+	                
+	                else if(instCheck.containsKey("do while loop"))
+	                {
+	                	
+	                }
+	                
+	                /*for(int i = 1; i < insts.size(); i++) //check each of those words to figure what to do
                     {
                         if(c1.contains(insts.get(i))) //check if in cat1 of words
                         {
@@ -357,13 +534,13 @@ public class test
                             {
                                 //initializing arrays are harder
                                 
-                                /*if(instCheck.containsKey("initialize")) //if user wants var initialized
+                                if(instCheck.containsKey("initialize")) //if user wants var initialized
                                 {
                                     if(instCheck.containsKey("called")) //what is the array called?
                                     {
                                         var = instCheck.containsKey("called");
                                         find = instCheck.containsKey("initialize"];
-                                        String addition = "\t" + c2.getType(insts[var - 1]) + " " + insts[var + 1] + " = " + insts[find + 3] + ";";
+                                        String addition = tab + c2.getType(insts[var - 1]) + " " + insts[var + 1] + " = " + insts[find + 3] + ";";
                                         startup.addToBasic(addition);
                                         startup.writeToFile(name);
                                     }
@@ -374,7 +551,7 @@ public class test
                                     }
                                 }
                                 
-                                else */
+                                else 
                             	
                                 if(instCheck.containsKey("called") || instCheck.containsKey("call")) // chose not to initialize
                                 {
@@ -393,7 +570,7 @@ public class test
                                         }                                   
 
                                         var = instCheck.get("called");
-                                        String addition = "\t" + c1.getType(insts.get(i)) + " " + insts.get(var + 1) + "[" + nums.get(insts.get(eles + 1)) + "];";
+                                        String addition = tab + c1.getType(insts.get(i)) + " " + insts.get(var + 1) + "[" + nums.get(insts.get(eles + 1)) + "];";
                                         startup.addToBasic(addition);
                                         startup.writeToFile(projectName);
                                     }
@@ -428,7 +605,7 @@ public class test
                                     else
                                     	num = insts.get(find +3);
                                     
-                                    String addition = "\t" + c1.getType(insts.get(var - 1)) + " " + insts.get(var + 1) + " = " + num + ";";
+                                    String addition = tab + c1.getType(insts.get(var - 1)) + " " + insts.get(var + 1) + " = " + num + ";";
                                     startup.addToBasic(addition);
                                     startup.writeToFile(projectName);
                                 }
@@ -442,7 +619,7 @@ public class test
                             else if(instCheck.containsKey("called") || instCheck.containsKey("call"))
                             {
                                 var = instCheck.get("called");
-                                String addition = "\t" +c1.getType(insts.get(var - 1)) + " " + insts.get(var + 1) + ";";
+                                String addition = tab +c1.getType(insts.get(var - 1)) + " " + insts.get(var + 1) + ";";
                                 startup.addToBasic(addition);
                                 startup.writeToFile(projectName);
                             }
@@ -454,7 +631,7 @@ public class test
                             
                             break;
                         }
-                    }
+                    }*/
 	                
 	                wordCount = 0;
 	                instCheck.clear();
