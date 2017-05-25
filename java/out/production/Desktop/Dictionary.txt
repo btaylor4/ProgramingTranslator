@@ -1,0 +1,6 @@
+int ints integer integers 
+float floats 
+double doubles 
+char chars character characters 
+string strings 
+array arrays 
